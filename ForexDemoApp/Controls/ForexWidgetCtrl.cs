@@ -62,8 +62,25 @@ namespace ForexDemoApp.Controls
                     if (jObj.ContainsKey("Realtime Currency Exchange Rate"))
                     {
                         var metadata = jObj["Realtime Currency Exchange Rate"].ToObject<Dictionary<string, string>>();
-                        lblBuyRate.Text = metadata["5. Exchange Rate"];
-                        lblSellLastRefreshed.Text = metadata["6. Last Refreshed"];
+
+                        var oldexchangerate = decimal.TryParse(lblBuyRate.Text, out decimal oldrate);
+                        var exchangeRate = decimal.TryParse(metadata["5. Exchange Rate"], out decimal newrate);
+
+                        if (oldrate < newrate)
+                        {
+                            lblBuyRate.ForeColor = Color.LightGreen;
+                        }
+                        if (oldrate == newrate)
+                        {
+                            lblBuyRate.ForeColor = Color.White;
+                        }
+                        if (oldrate > newrate)
+                        {
+                            lblBuyRate.ForeColor = Color.LightCoral;
+                        }
+
+                        lblBuyRate.Text = newrate.ToString();
+                        lblBuyLastRefreshed.Text = metadata["6. Last Refreshed"];
                     }
                 }
                 catch (Exception e)
@@ -78,8 +95,25 @@ namespace ForexDemoApp.Controls
                     if (jObj.ContainsKey("Realtime Currency Exchange Rate"))
                     {
                         var metadata = jObj["Realtime Currency Exchange Rate"].ToObject<Dictionary<string, string>>();
-                        lblSellRate.Text = metadata["5. Exchange Rate"];
-                        lblBuyLastRefreshed.Text = metadata["6. Last Refreshed"];
+
+                        var oldexchangerate = decimal.TryParse(lblBuyRate.Text, out decimal oldrate);
+                        var exchangeRate = decimal.TryParse(metadata["5. Exchange Rate"], out decimal newrate);
+
+                        if (oldrate < newrate)
+                        {
+                            lblSellRate.ForeColor = Color.LightGreen;
+                        }
+                        if (oldrate == newrate)
+                        {
+                            lblSellRate.ForeColor = Color.White;
+                        }
+                        if (oldrate > newrate)
+                        {
+                            lblSellRate.ForeColor = Color.LightCoral;
+                        }
+
+                        lblSellRate.Text = newrate.ToString();
+                        lblSellLastRefreshed.Text = metadata["6. Last Refreshed"];
                     }
                 }
                 catch (Exception e)

@@ -27,9 +27,10 @@ namespace ForexDemoApp
             var apikey = ConfigurationManager.AppSettings["apikey"];
             ForexWidgetCtrl w = new ForexWidgetCtrl(uri, function, "GBP", "EUR", apikey);
 
-            w.Location = new Point(10, 50);
-            w.Visible = true;
-            Controls.Add(w);
+            flowLayoutPanel1.Controls.Add(w);
+
+            w = new ForexWidgetCtrl(uri, function, "BRL", "GBP", apikey);
+            flowLayoutPanel1.Controls.Add(w);
         }
     }
 }

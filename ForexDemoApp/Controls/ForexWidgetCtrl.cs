@@ -15,10 +15,11 @@ namespace ForexDemoApp.Controls
 {
     public partial class ForexWidgetCtrl : UserControl
     {
-        public string _uri { get; set; }
-        public string _function { get; set; }
-        public string _fromCurrency { get; set; }
-        public string _toCurrency { get; set; }
+        string _uriBuy { get; set; }
+        string _uriSell { get; set; }
+        string _function { get; set; }
+        string _fromCurrency { get; set; }
+        string _toCurrency { get; set; }
 
         // Create a New HttpClient object.
         HttpClient client;
@@ -30,7 +31,9 @@ namespace ForexDemoApp.Controls
             _function = function;
             _fromCurrency = fromCurrency;
             _toCurrency = toCurrency;
-            _uri = uri + $"function={function}&from_currency={_fromCurrency}&to_currency={_toCurrency}&apikey={apikey}";
+            _uriBuy = uri + $"function={function}&from_currency={_fromCurrency}&to_currency={_toCurrency}&apikey={apikey}";
+            _uriSell = uri + $"function={function}&from_currency={_toCurrency}&to_currency={_fromCurrency}&apikey={apikey}";
+            lblPair.Text = $"{_fromCurrency}/{_toCurrency}";
         }
 
         private void btnClose_MouseHover(object sender, EventArgs e)
@@ -54,9 +57,22 @@ namespace ForexDemoApp.Controls
             {
                 try
                 {
-                    string responseBody = await client.GetStringAsync(_uri);
+                    string responseBody = await client.GetStringAsync(_uriBuy);
                     var jObj = JObject.Parse(responseBody);
                     var metadata = jObj["Realtime Currency Exchange Rate"].ToObject<Dictionary<string, string>>();
+                    lblBuyRate.Text = metadata["5. Exchange Rate"];
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+                try
+                {
+                    string responseBody = await client.GetStringAsync(_uriSell);
+                    var jObj = JObject.Parse(responseBody);
+                    var metadata = jObj["Realtime Currency Exchange Rate"].ToObject<Dictionary<string, string>>();
+                    lblSellRate.Text = metadata["5. Exchange Rate"];
                 }
                 catch (Exception)
                 {
@@ -68,6 +84,11 @@ namespace ForexDemoApp.Controls
         private async void ForexWidgetCtrl_Load(object sender, EventArgs e)
         {
             await CallApi();
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Parent.Controls.Remove(this);
         }
     }
 }

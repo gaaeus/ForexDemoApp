@@ -38,6 +38,8 @@
             this.lblBuy = new System.Windows.Forms.Label();
             this.lblBuyRate = new System.Windows.Forms.Label();
             this.lblSellRate = new System.Windows.Forms.Label();
+            this.lblBuyLastRefreshed = new System.Windows.Forms.Label();
+            this.lblSellLastRefreshed = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -82,24 +84,29 @@
             // 
             // updateTimer
             // 
-            this.updateTimer.Interval = 5000;
+            this.updateTimer.Enabled = true;
+            this.updateTimer.Interval = 20000;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.lblSellLastRefreshed, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.lblBuyLastRefreshed, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.lblSellRate, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.lblBuyRate, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.lblBuy, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblSell, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 33);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 37);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(262, 145);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(262, 138);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // lblSell
@@ -134,7 +141,7 @@
             this.lblBuyRate.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblBuyRate.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBuyRate.ForeColor = System.Drawing.Color.White;
-            this.lblBuyRate.Location = new System.Drawing.Point(134, 25);
+            this.lblBuyRate.Location = new System.Drawing.Point(3, 33);
             this.lblBuyRate.Name = "lblBuyRate";
             this.lblBuyRate.Size = new System.Drawing.Size(125, 26);
             this.lblBuyRate.TabIndex = 2;
@@ -147,12 +154,36 @@
             this.lblSellRate.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblSellRate.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSellRate.ForeColor = System.Drawing.Color.White;
-            this.lblSellRate.Location = new System.Drawing.Point(3, 25);
+            this.lblSellRate.Location = new System.Drawing.Point(134, 33);
             this.lblSellRate.Name = "lblSellRate";
             this.lblSellRate.Size = new System.Drawing.Size(125, 26);
             this.lblSellRate.TabIndex = 3;
             this.lblSellRate.Text = "0";
             this.lblSellRate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblBuyLastRefreshed
+            // 
+            this.lblBuyLastRefreshed.AutoSize = true;
+            this.lblBuyLastRefreshed.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblBuyLastRefreshed.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBuyLastRefreshed.ForeColor = System.Drawing.Color.DarkGray;
+            this.lblBuyLastRefreshed.Location = new System.Drawing.Point(134, 118);
+            this.lblBuyLastRefreshed.Name = "lblBuyLastRefreshed";
+            this.lblBuyLastRefreshed.Size = new System.Drawing.Size(125, 14);
+            this.lblBuyLastRefreshed.TabIndex = 4;
+            this.lblBuyLastRefreshed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblSellLastRefreshed
+            // 
+            this.lblSellLastRefreshed.AutoSize = true;
+            this.lblSellLastRefreshed.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblSellLastRefreshed.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSellLastRefreshed.ForeColor = System.Drawing.Color.DarkGray;
+            this.lblSellLastRefreshed.Location = new System.Drawing.Point(3, 118);
+            this.lblSellLastRefreshed.Name = "lblSellLastRefreshed";
+            this.lblSellLastRefreshed.Size = new System.Drawing.Size(125, 14);
+            this.lblSellLastRefreshed.TabIndex = 5;
+            this.lblSellLastRefreshed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ForexWidgetCtrl
             // 
@@ -182,5 +213,7 @@
         private System.Windows.Forms.Label lblSell;
         private System.Windows.Forms.Label lblSellRate;
         private System.Windows.Forms.Label lblBuyRate;
+        private System.Windows.Forms.Label lblBuyLastRefreshed;
+        private System.Windows.Forms.Label lblSellLastRefreshed;
     }
 }

@@ -59,24 +59,32 @@ namespace ForexDemoApp.Controls
                 {
                     string responseBody = await client.GetStringAsync(_uriBuy);
                     var jObj = JObject.Parse(responseBody);
-                    var metadata = jObj["Realtime Currency Exchange Rate"].ToObject<Dictionary<string, string>>();
-                    lblBuyRate.Text = metadata["5. Exchange Rate"];
+                    if (jObj.ContainsKey("Realtime Currency Exchange Rate"))
+                    {
+                        var metadata = jObj["Realtime Currency Exchange Rate"].ToObject<Dictionary<string, string>>();
+                        lblBuyRate.Text = metadata["5. Exchange Rate"];
+                        lblSellLastRefreshed.Text = metadata["6. Last Refreshed"];
+                    }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    throw;
+                    Console.Write(e.Message);
                 }
 
                 try
                 {
                     string responseBody = await client.GetStringAsync(_uriSell);
                     var jObj = JObject.Parse(responseBody);
-                    var metadata = jObj["Realtime Currency Exchange Rate"].ToObject<Dictionary<string, string>>();
-                    lblSellRate.Text = metadata["5. Exchange Rate"];
+                    if (jObj.ContainsKey("Realtime Currency Exchange Rate"))
+                    {
+                        var metadata = jObj["Realtime Currency Exchange Rate"].ToObject<Dictionary<string, string>>();
+                        lblSellRate.Text = metadata["5. Exchange Rate"];
+                        lblBuyLastRefreshed.Text = metadata["6. Last Refreshed"];
+                    }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    throw;
+                    Console.Write(e.Message);
                 }
             }
         }
@@ -89,6 +97,12 @@ namespace ForexDemoApp.Controls
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Parent.Controls.Remove(this);
+        }
+
+        private async void updateTimer_Tick(object sender, EventArgs e)
+        {
+            await CallApi();
+            //updateTimer.Enabled = false;
         }
     }
 }

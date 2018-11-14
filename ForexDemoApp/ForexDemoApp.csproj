@@ -50,12 +50,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorFader.cs" />
+    <Compile Include="Controls\CandleStickCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CandleStickCtrl.Designer.cs">
+      <DependentUpon>CandleStickCtrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ForexWidgetCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ForexWidgetCtrl.Designer.cs">
       <DependentUpon>ForexWidgetCtrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Enumerations\Enums.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +71,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\CandleStickCtrl.resx">
+      <DependentUpon>CandleStickCtrl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ForexWidgetCtrl.resx">
       <DependentUpon>ForexWidgetCtrl.cs</DependentUpon>
     </EmbeddedResource>

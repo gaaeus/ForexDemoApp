@@ -25,12 +25,13 @@ namespace ForexDemoApp
             var uri = ConfigurationManager.AppSettings["URL"]; 
             var function = ConfigurationManager.AppSettings["function"];
             var apikey = ConfigurationManager.AppSettings["apikey"];
-            ForexWidgetCtrl w = new ForexWidgetCtrl(uri, function, "GBP", "EUR", apikey);
 
-            flowLayoutPanel1.Controls.Add(w);
 
-            w = new ForexWidgetCtrl(uri, function, "BRL", "GBP", apikey);
-            flowLayoutPanel1.Controls.Add(w);
+            //ForexWidgetCtrl w = new ForexWidgetCtrl(uri, function, "GBP", "EUR", apikey);
+            //flowLayoutPanel1.Controls.Add(w);
+
+            //w = new ForexWidgetCtrl(uri, function, "BRL", "GBP", apikey);
+            //flowLayoutPanel1.Controls.Add(w);
         }
     }
 }

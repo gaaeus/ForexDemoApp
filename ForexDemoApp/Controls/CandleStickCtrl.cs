@@ -12,6 +12,8 @@ using Newtonsoft.Json.Linq;
 
 namespace ForexDemoApp.Controls
 {
+    // sample https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=demo
+
     public partial class CandleStickCtrl : UserControl
     {
         string _uriSymbol { get; set; }

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using ForexDemoApp.Classes;
+using System.Collections;
 
 namespace ForexDemoApp.Controls
 {
@@ -46,14 +48,31 @@ namespace ForexDemoApp.Controls
                     var timeSeriesKey = $"Time Series ({_interval.Replace("interval=", string.Empty)})";
                     if (jObj.ContainsKey("Meta Data") && jObj.ContainsKey(timeSeriesKey))
                     {
-                        var metadata = jObj["Meta Data"].ToObject<Dictionary<string, string>>();
-                        var timeSeries = jObj[timeSeriesKey].ToObject<Dictionary<string, string>>();
-
-                        if (timeSeries.Count() > 0)
+                        var timeKeys = new List<string>();
+                        var indicatorsDataSource = new ArrayList();
+                        foreach (var item in jObj[timeSeriesKey].ToList())
                         {
+                            var timeKey = ((JProperty)(item)).Name;
+                            timeKeys.Add(timeKey);
 
+                            // Get the values for each timeKey and add to datasource
+                            indicatorsDataSource.Add(new Record(
+                                    indicatorsDataSource.Count + 1,
+                                    timeKey,
+                                    Convert.ToDouble(item.ElementAt(0).ToObject<Dictionary<string, string>>()["1. open"]),
+                                    Convert.ToDouble(item.ElementAt(0).ToObject<Dictionary<string, string>>()["2. high"]),
+                                    Convert.ToDouble(item.ElementAt(0).ToObject<Dictionary<string, string>>()["3. low"]),
+                                    Convert.ToDouble(item.ElementAt(0).ToObject<Dictionary<string, string>>()["4. close"])
+                                ));
                         }
 
+                        chart1.Series["Series1"].XValueMember = "TimeStamp";
+                        chart1.Series["Series1"].YValueMembers = "High, Low, Open, Close";
+                        chart1.Series["Series1"].CustomProperties = "PrieceDownColor=Red,PriceUpColor=green";
+                        chart1.Series["Series1"]["ShowOpenClose"] = "Both";
+                        chart1.DataManipulator.IsStartFromFirst = true;
+                        chart1.DataSource = indicatorsDataSource;
+                        chart1.DataBind();
                     }
                 }
                 catch (Exception e)
@@ -61,6 +80,11 @@ namespace ForexDemoApp.Controls
                     Console.Write(e.Message);
                 }
             }
+        }
+
+        private async void CandleStickCtrl_Load(object sender, EventArgs e)
+        {
+            await CallApi();
         }
     }
 }
